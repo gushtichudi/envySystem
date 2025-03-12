@@ -4,6 +4,39 @@ bits 16     ; What mode to run on.
 ;; nasm macro for newline
 %define BRK 0x0D, 0x0A
 
+
+
+; ------------
+; FAT12 header
+; ------------
+jmp short start
+nop
+
+bdb_oem:                    db "MSWIN4.1"         ; 8 bytes
+bdb_bytes_per_sector:       dw 512             
+bdb_sectors_per_cluster:    db 1                  
+bdb_reserved_sectors:       dw 1                  
+bdb_number_of_fats:         db 2                  
+bdb_dir_entries_countL:     dw 0E0h
+bdb_total_sectors:          dw 2880                ; 1.44MB
+bdb_media_descriptor:       db 0F0h                ; 3.5" 1.44MB floppy
+bdb_sectors_per_fat:        dw 9
+bdb_sectors_per_track:      dw 18
+bdb_heads:                  dw 2
+bdb_hidden_sectors:         dd 0
+bdb_large_sector_count:     dd 0
+
+;; extended boot record
+ebr_drive_number:           db 0
+                            db 0                    ; reserved
+ebr_signature:              db 29h                  ; 0x29
+ebr_volume_id:              dd 47h, 48h, 49h, 50h
+ebr_volume_label:           db "ENVYSYSTEM "        ; 11 bytes
+ebr_system_id:              db "FAT12   "           ; 8 bytes
+
+
+
+
 ; ** Jump to `main` as without it, the assembler would think any other function is our
 ;    entry point.
 start:
@@ -68,8 +101,8 @@ main:
 ; -------------------
 ; Our welcome message
 ; -------------------
-welcome: db 'envySystem 0.0.1-0 :: Purgatory. Enjoy your stay.', BRK, 0
-another: db 'This may be the start of something so great.', BRK, 0
+welcome: db 'myHandwrittenSystem 0.0.2-0 bootloader', BRK, 0
+another: db 'No kernel has been written yet', BRK, 0
 
 times 510-($-$$) db 0
 dw 0AA55h
