@@ -1,7 +1,7 @@
 # ---- info about os itself ---- #
 PROG_NAME=envySystem
 PROG_ARCH=`uname -m`
-PROG_VERSION=0.0.2-0
+PROG_VERSION=0.0.2.1-0
 
 # ---- build info ---- #
 ASM=nasm

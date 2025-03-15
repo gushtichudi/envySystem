@@ -70,7 +70,11 @@ swrite:
     pop si
     ret
 
-
+clrscr:
+  mov ah, 0x00
+  mov al, 0x03
+  int 0x10
+  ret
 
 ; -------------------------
 ; Main entry of our program
@@ -85,6 +89,10 @@ main:
     mov ss, ax
     mov sp, 0x7C00     ; stack grows downward from loaded memory location
 
+    ;; clear screen
+    call clrscr
+    ; jmp $
+
     ;; welcome you
     mov si, welcome
     call swrite
@@ -98,10 +106,13 @@ main:
 .halt:
     jmp .halt
 
+; Disk shenanigans
+;; (just after i commit ts)
+
 ; -------------------
 ; Our welcome message
 ; -------------------
-welcome: db 'myHandwrittenSystem 0.0.2-0 bootloader', BRK, 0
+welcome: db 'envySystem 0.0.2.1-0, Copyright (c) 2025 Buck. All Rights Reserved.', BRK, 0
 another: db 'No kernel has been written yet', BRK, 0
 
 times 510-($-$$) db 0
